@@ -1,6 +1,9 @@
 ---
 - hosts: localhost
   gather_facts: no
+  module_defaults:
+    group/aws:
+      region: "us-west-1"
   tasks:
     - name: Create VPC
       ec2_vpc_net:
@@ -8,5 +11,42 @@
         cidr_block: 10.5.0.0/16
         tags:
           Module: 5
-#       region: "us-west-1"
         state: present
+      register: vpc_demo
+    - name: debug
+      debug: var=vpc_demo
+    - name: Create public subnet
+      ec2_vpc_subnet:
+        vpc_id: "{{ vpc_demo.vpc.id }}"
+        tags:
+          Name: Module5 public demo
+          Module: 5
+        cidr: 10.5.0.0/24
+        state: present
+      register: subnet_public_demo
+    - name: Create private subnet
+      ec2_vpc_subnet:
+        vpc_id: "{{ vpc_demo.vpc.id }}"
+        tags:
+          Name: Module5 private demo
+          Module: 5
+        cidr: 10.5.1.0/24
+        state: present
+      register: subnet_private_demo
+    - name: Create igw
+      ec2_vpc_igw:
+        vpc_id: "{{ vpc_demo.vpc.id }}"
+        tags:
+          Name: Module 5 demo gateway
+        state: present
+      register: igw_demo
+    - name: Create public route table
+      ec2_vpc_route_table:
+        vpc_id: "{{ vpc_demo.vpc.id }}"
+        tags:
+          Name: Module5demoRTBL
+        subnets:
+          - "{{ subnet_public_demo.subnet.id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ igw_demo.gateway_id }}"
