@@ -1,0 +1,8 @@
+---
+- hosts: al2
+  become: yes
+  tasks:
+   - name: Install emacs-nox
+     package:
+       name: emacs-nox
+       state: present
