@@ -11,6 +11,8 @@
        name: emacs-nox
        state: present
    - name: Install apache
+     when:
+       - ansible_facts['distribution'] == 'Amazon'
      package: name=httpd state=present
    - name: Copy index.html
      copy:
