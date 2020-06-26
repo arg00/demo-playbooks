@@ -1,6 +1,5 @@
 ---
-- hosts: ec2-54-67-38-48.us-west-1.compute.amazonaws.com
-  ansible_python_interpreter: /usr/bin/python3
+- hosts: localhost
   gather_facts: no
   tasks:
     - name: Create VPC
