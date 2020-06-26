@@ -11,4 +11,4 @@ all:
         ec2-54-67-38-48.us-west-1.compute.amazonaws.com:
       vars:
         ansible_user: ec2-user
-        ansible_python_interpreter: /usr/bin/python
+        ansible_python_interpreter: /usr/bin/python3
