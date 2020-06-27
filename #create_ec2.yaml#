@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    ami_id: "ami-04e59c05167ea7bd5"
+  module_defaults:
+    group/aws:
+      region: "us-west-1"
+  tasks:
+    - name: Provision M5 demo EC2 instance
+      ec2:
+        key_name: module1keypair
+        group: Module5-devel-demo-sg
+        instance_type: t2.micro
+        image: "{{ ami_id }}"
+        instance_tags:
+          Name: Module5 Demo
+          Module: 5
+        wait: yes
+        vpc_subnet_id: "{{ subnet_public_demo.subnet.id }}"
+        exact_count: 1
+        count_tag:
+          Name: Module5 Demo
