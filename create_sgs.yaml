@@ -23,7 +23,24 @@
             ports:
             - 22
             cidr_ip: 0.0.0.0/0
-#    - name: Create development sg
+    - name: Create m5 demo devel security group
+      ec2_group:
+        name: Module5-devel-demo-sg
+        description: m5 demo devel sec group
+        vpc_id: "{{ vpc_demo.vpc.id }}"
+        state: present
+        rules:
+          - proto: tcp
+            ports:
+              - 5000
+              - 5555
+            cidr_ip:
+              - 70.95.135.156/32
+              - 24.196.25.139/32
+              - 24.239.105.213/32
+          - proto: tcp
+            ports: 22
+            cidr_ip: 0.0.0.0/0
 #    - name: Create postgres-tag sg
 #    - name: Create postgres sg
 #    - name: Create NLB sg

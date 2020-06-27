@@ -70,3 +70,16 @@
           - dest: 0.0.0.0/0
             gateway_id: "{{ m5demo_ng.nat_gateway_id }}"
         state: present
+    - name: Create security group
+      ec2_group:
+        name: Module5-devel-demo-sg
+        description: Developer security group
+        vpc_id: "{{ vpc_demo.vpc.id }}"
+        rules:
+          - proto: tcp
+            ports:
+              - 22
+              - 80
+            cidr_ip: 0.0.0.0/0
+            rule_desc: allow all from ports 22 and 80
+        state: present
