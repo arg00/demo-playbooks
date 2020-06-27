@@ -23,6 +23,7 @@
           Module: 5
         cidr: 10.5.0.0/24
         state: present
+        map_public: yes
       register: subnet_public_demo
     - name: Create private subnet
       ec2_vpc_subnet:
@@ -40,6 +41,13 @@
           Name: Module 5 demo gateway
         state: present
       register: igw_demo
+    - name: Create new nat gateway and allocate new EIP if a nat gateway does not yet exist in the subnet.
+      ec2_vpc_nat_gateway:
+        subnet_id: "{{ subnet_private_demo.subnet.id }}"
+        state: present
+        wait: yes
+        if_exist_do_not_create: true
+      register: m5demo_ng
     - name: Create public route table
       ec2_vpc_route_table:
         vpc_id: "{{ vpc_demo.vpc.id }}"
@@ -50,6 +58,17 @@
         routes:
           - dest: 0.0.0.0/0
             gateway_id: "{{ igw_demo.gateway_id }}"
+        state: present
+    - name: Create private route table
+      ec2_vpc_route_table:
+        vpc_id: "{{ vpc_demo.vpc.id }}"
+        tags:
+          Name: Module5demoRTBLprivate
+        subnets:
+          - "{{ subnet_private_demo.subnet.id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ m5demo_ng.nat_gateway_id }}"
         state: present
     - name: Create security group
       ec2_group:
