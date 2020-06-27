@@ -61,11 +61,6 @@
         name: m5demo-postgres-asg
         description: m5 demo postgres sg
         vpc_id: "{{ vpc_demo.vpc.id }}"
-        rules:
-          - proto: tcp
-            ports:
-            - 5432
-            cidr_ip: "{{ m5demo_postgrestag_sg.group_id }}"
         register: m5demo_postgres_sg   
     - name: Create postgres-tag sg
       ec2_group:
@@ -78,3 +73,11 @@
             - 5432
             cidr_ip: "{{ m5demo_postgres_sg.group_id }}"    
       register: m5demo_potgrestag_sg
+    - name: Edit rules for postgres sg
+      ec2_group:
+        name: m5demo-postgres-asg
+        rules:
+          - proto: tcp
+            ports:
+            - 5432
+            cidr_ip: "{{ m5demo_postgrestag_sg.group_id }}"
