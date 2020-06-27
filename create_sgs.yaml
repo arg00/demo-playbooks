@@ -1,12 +1,29 @@
 ---
-- host: localhost
+- hosts: localhost
   gather_facts: no
   module_defaults:
     group/aws:
       region: "us-west-1"
   tasks:
     - name: Create nginx servers autoscaling group sg
-    - name: Create development sg
-    - name: Create postgres-tag sg
-    - name: Create postgres sg
-    - name: Create NLB sg
+      ec2_group:
+        name: m5demo-nginx-server-asg
+        description: nginx load balanced servers
+        vpc_id: "{{ vpc_demo.vpc.id }}"
+        rules:
+          - proto: tcp
+            ports:
+            - 80
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            ports:
+            - 443
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            ports:
+            - 22
+            cidr_ip: 0.0.0.0/0
+#    - name: Create development sg
+#    - name: Create postgres-tag sg
+#    - name: Create postgres sg
+#    - name: Create NLB sg

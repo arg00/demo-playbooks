@@ -1,5 +1,4 @@
 ---
 - import_playbook: create_vpc.yaml
-# - import_playbook: create_sgs.yaml
-# - import_playbook: create_
-- import_playbook: create_rds.yaml
+- import_playbook: create_ec2.yaml
+# - import_playbook: create_rds.yaml
