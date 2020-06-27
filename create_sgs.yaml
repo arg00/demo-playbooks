@@ -1,0 +1,12 @@
+---
+- host: localhost
+  gather_facts: no
+  module_defaults:
+    group/aws:
+      region: "us-west-1"
+  tasks:
+    - name: Create nginx servers autoscaling group sg
+    - name: Create development sg
+    - name: Create postgres-tag sg
+    - name: Create postgres sg
+    - name: Create NLB sg
