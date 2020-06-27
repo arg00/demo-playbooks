@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/aws:
+      region: "us-west-1"
+  tasks:
+    - name: Create postgreSQL rds
+      rds:
+        command: create
+        instance_name: m5demoDB
+        db_engine: postgres
+        size: 20
+        subnet: "{{ subnet_private_demo.subnet.id }}"
+        instance_type: db.t2.micro
+        username: postgres
+        password: simple
+        wait: yes
+        wait_timeout: 1000
+      register: m5demoDB
