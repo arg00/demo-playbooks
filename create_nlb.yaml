@@ -5,26 +5,14 @@
     group/aws:
       region: "us-west-1"
   tasks:
-    - name: Allocate a new elastic IP without associating it to anything
-      ec2_eip:
-        reuse_existing_ip_allowed: yes
-#        tag_name: NLB 
-        state: present
-      register: eip1
-    - name: Allocate a new elastic IP without associating it to anything 2
-      ec2_eip:
-        reuse_existing_ip_allowed: yes
-#        tag_name: NLB
-        state: present
-      register: eip2
     - name: Create network load balancer
       elb_network_lb:
         name: m5demo-nlb
         subnet_mappings:
           - SubnetId: "{{ subnet_public_demo.subnet.id }}"
-            AllocationId: "{{ eip1.allocation_id }}"
+            AllocationId: eipalloc-090a7233941caebf5
           - SubnetId: "{{ subnet_public_demo2.subnet.id }}"
-            AllocationId: "{{ eip2.allocation_id }}"
+            AllocationId: eipalloc-0011f238e9e63f3bb
         listeners:
           - Protocol: TCP 
             Port: 80
@@ -49,8 +37,8 @@
         type: A
         ttl: 7200
         value:
-          - "{{ eip1.public_ip }}"
-          - "{{ eip2.public_ip }}"
+          - 184.72.1.65
+          - 52.9.246.95
         wait: yes
         state: present
     - name: Update www route 53 entry w new nlb az eips replicated
@@ -63,7 +51,7 @@
         type: A
         ttl: 7200
         value:
-          - "{{ eip1.public_ip }}"
-          - "{{ eip2.public_ip }}"
+          - 184.72.1.65
+          - 52.9.246.95
         wait: yes
         state: present
