@@ -7,16 +7,21 @@
   tasks:
     - name: Create autoscale group launch template
       ec2_launch_template:
-        name: m5demo-nginxserver-lt
+        name: m5-nginxserver-lt
         image_id: "ami-04e59c05167ea7bd5"
         key_name: module1keypair
         instance_type: t2.micro
         iam_instance_profile: m5server-role
         network_interfaces:
-          -  associate_public_ip_address: yes
+          - device_index: 0
+            associate_public_ip_address: yes
+            subnet_id: '{{ subnet_public_demo.subnet.id }}'
+            groups:
+              - m5demo_nginx_server
+              - m5demo_postgrestag
         user_data: "{{ lookup('file', 'ec2-prod-bootstrap64.txt') }}"
         tags:
           Name: m5-nginx-server-asg
-        security_groups: 
-          - m5demo-nginx-server-asg
-          - m5demo-postgrestag-sg
+#        security_group_ids:
+#          - "{{ m5demo_nginx_server.group_id }}"
+#          - '{{ m5demo_postgrestag.group_id }}'

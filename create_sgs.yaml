@@ -7,7 +7,7 @@
   tasks:
     - name: Create nginx servers autoscaling group sg
       ec2_group:
-        name: m5demo-nginx-server-asg
+        name: m5demo_nginx_server
         description: nginx load balanced servers
         vpc_id: "{{ vpc_demo.vpc.id }}"
         rules:
@@ -25,7 +25,7 @@
             cidr_ip: 0.0.0.0/0
     - name: Create m5 demo devel security group
       ec2_group:
-        name: Module5-devel-demo-sg
+        name: Module5_devel_demo
         description: m5 demo devel sec group
         vpc_id: "{{ vpc_demo.vpc.id }}"
         state: present
@@ -43,7 +43,7 @@
             cidr_ip: 0.0.0.0/0
     - name: Create NLB sg
       ec2_group:
-        name: Module5-NLB-demo-sg
+        name: Module5_NLB_demo
         description: m5 demo nlb sec group
         vpc_id: "{{ vpc_demo.vpc.id }}"
         state: present
@@ -58,28 +58,28 @@
               - 24.239.105.213/32 
     - name: Create postgres sg
       ec2_group:
-        name: m5demo-postgres-sg
+        name: m5demo_postgres
         description: allow to connect postgrestag
         vpc_id: "{{ vpc_demo.vpc.id }}"
         state: present
     - name: Create postgres-tag sg
       ec2_group:
-        name: m5demo-postgrestag-sg
+        name: m5demo_postgrestag
         description: allow to connect postgres
         vpc_id: "{{ vpc_demo.vpc.id }}"
         rules_egress:
           - proto: tcp
             ports:
             - 5432
-            group_name: m5demo-postgres-sg
+            group_name: m5demo_postgres
         state: present
     - name: Edit rules for postgres sg
       ec2_group:
-        name: m5demo-postgres-sg
+        name: m5demo_postgres
         description: allow to connect postgrestag
         rules:
           - proto: tcp
             ports:
             - 5432
-            group_name: m5demo-postgrestag-sg
+            group_name: m5demo_postgrestag
         state: present
