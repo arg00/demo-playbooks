@@ -1,1 +1,15 @@
 ---
+- hosts: _m5_nginx_server_asg
+  gather_facts: no
+  module_defaults:
+    group/aws:
+      region: "us-west-1"
+  tasks:
+    - name: update sgs
+      ec2_instance:
+        security_groups: 
+          - m5demo_nginx_server.group_id
+          - Module5_devel_demo.group_id
+          - Module5_NLB_demo.group_id
+          - m5demo_postgrestag.group_id
+          - sg-0c883e1f011b6479c
