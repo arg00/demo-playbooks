@@ -4,3 +4,42 @@
   module_defaults:
     group/aws:
       region: "us-west-1"
+  tasks:
+    - name: Create public nacl
+      ec2_vpc_nacl:
+        vpc_id: "{{ vpc_demo.vpc.id }}"
+        name: m5-public-acl
+        region: "us-west-1"
+        subnets: ['subnet_public_demo', 'subnet_public_demo2']
+        ingress:
+            - [105, 'tcp', 'allow', '70.95.135.156/32', null, null, 80, 80]
+	    	- [102, 'tcp', 'allow', '70.95.135.156/32', null, null, 443, 443]
+            - [110, 'tcp', 'allow', '70.95.135.156/32', null, null, 5000, 5000]
+            - [115, 'tcp', 'allow', '70.95.135.156/32', null, null, 5555, 5555]
+	    	- [145, 'tcp', 'allow', '24.239.105.213/32', null, null, 443, 443]
+	    	- [150, 'tcp', 'allow', '24.239.105.213/32', null, null, 80, 80]
+            - [155, 'tcp', 'allow', '24.239.105.213/32', null, null, 5000, 5000]
+            - [160, 'tcp', 'allow', '24.239.105.213/32', null, null, 5555, 5555]
+	    	- [170, 'tcp', 'allow', '24.196.25.139/32', null, null, 443, 443]
+	    	- [175, 'tcp', 'allow', '24.196.25.139/32', null, null, 80, 80]
+            - [180, 'tcp', 'allow', '24.196.25.139/32', null, null, 5000, 5000]
+            - [185, 'tcp', 'allow', '24.196.25.139/32', null, null, 5555, 5555]
+            - [200, 'tcp', 'allow', '0.0.0.0/0', null, null, 22, 22]
+            - [900, 'tcp', 'allow', '0.0.0.0/0', null, null, 1024, 65535]
+        egress:
+            - [100, 'tcp', 'allow', '0.0.0.0/0', null, null, 80, 80]
+            - [200, 'tcp', 'allow', '0.0.0.0/0', null, null, 22, 22]
+            - [300, 'tcp', 'allow', '0.0.0.0/0', null, null, 443, 443]
+            - [900, 'tcp', 'allow', '0.0.0.0/0', null, null, 1024, 65535]
+        state: 'present'
+    - name: Create private nacl
+      ec2_vpc_nacl:
+        vpc_id: "{{ vpc_demo.vpc.id }}"
+        name: m5-private-acl
+        region: "us-west-1"
+        subnets: ['subnet_private_demo', 'subnet_private_demo2']
+        ingress:
+            - [100, 'tcp', 'allow', '10.0.0.0/16', null, null, 5432, 5432]
+        egress:
+            - [900, 'tcp', 'allow', '10.0.0.0/16', null, null, 1024, 65535]
+        state: 'present'
