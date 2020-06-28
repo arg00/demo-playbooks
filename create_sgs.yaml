@@ -58,26 +58,28 @@
               - 24.239.105.213/32 
     - name: Create postgres sg
       ec2_group:
-        name: m5demo-postgres-asg
-        description: m5 demo postgres sg
+        name: m5demo-postgres-sg
+        description: allow to connect postgrestag
         vpc_id: "{{ vpc_demo.vpc.id }}"
-        register: m5demo_postgres_sg   
+        state: present
     - name: Create postgres-tag sg
       ec2_group:
-        name: m5demo-postgrestag-asg
-        description: m5 demo postgres tag sg
+        name: m5demo-postgrestag-sg
+        description: allow to connect postgres
         vpc_id: "{{ vpc_demo.vpc.id }}"
         rules_egress:
           - proto: tcp
             ports:
             - 5432
-            cidr_ip: "{{ m5demo_postgres_sg.group_id }}"    
-      register: m5demo_potgrestag_sg
+            group_name: m5demo-postgres-sg
+        state: present
     - name: Edit rules for postgres sg
       ec2_group:
-        name: m5demo-postgres-asg
+        name: m5demo-postgres-sg
+        description: allow to connect postgrestag
         rules:
           - proto: tcp
             ports:
             - 5432
-            cidr_ip: "{{ m5demo_postgrestag_sg.group_id }}"
+            group_name: m5demo-postgrestag-sg
+        state: present
