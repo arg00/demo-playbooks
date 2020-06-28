@@ -13,9 +13,10 @@
         instance_type: t2.micro
 #        iam_instance_profile: m5demorole(so has aws cli to s3 and secrets)
         network_interfaces:
-          associate_public_ip_address: yes
-        user_data: "{{ lookup('file', './ec2-prod-bootstrap.sh') }}"
+          -  associate_public_ip_address: yes
+        user_data: "{{ lookup('file', 'ec2-prod-bootstrap64.txt') }}"
+        tags:
+          Name: m5-nginx-server-asg
         security_groups: 
           - m5demo-nginx-server-asg
           - m5demo-postgrestag-sg
-        template_name: m5demo-nginxserver-lt
