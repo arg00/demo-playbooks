@@ -9,7 +9,7 @@
       elb_target_group:
         name: m5demo-target-group
         target_type: instance
-        protocol: http
+        protocol: TCP
         port: 80
         vpc_id: "{{ vpc_demo.vpc.id }}"
         state: present
@@ -35,7 +35,10 @@
             AllocationId: "{{ eip2.allocation_id }}"
         listeners:
           - Protocol: TCP 
-            Port: 80 
+            Port: 80
+            DefaultActions:
+              - Type: forward 
+                TargetGroupName: m5demo-target-group
           - Protocol: TLS
             Port: 443
             DefaultActions:
