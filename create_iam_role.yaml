@@ -1,1 +1,25 @@
 ---
+- hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/aws:
+      region: "us-west-1"
+  tasks:
+    - name: Create m5 asg server role
+      iam_role:
+        name: m5server-role
+        description: M5 server accesses s3 and secrets
+    - name: Create s3 policy 
+      iam_policy:
+        iam_type: role
+        iam_name: m5server-role
+        policy_name: m5s3policy
+        state: present
+        policy_document: "{{ lookup('file','m5s3policy.json') }}"
+    - name: Create s3 policy 
+      iam_policy:
+        iam_type: role
+        iam_name: m5server-role
+        policy_name: m5s3policy
+        state: present
+        policy_document: "{{ lookup('file','m5s3policy.json') }}"
