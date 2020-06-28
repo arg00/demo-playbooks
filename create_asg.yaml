@@ -5,13 +5,13 @@
     group/aws:
       region: "us-west-1"
   tasks:
-#    - name: debug nlb
-#      debug: var=m5demo-nlb
+    - name: debug nlb
+      debug: var=m5demo-nlb
     - name: create asg
       ec2_asg:
         name: m5-asg
-#        load_balancers: m5demo-nlb.load_balancer_arn
-        target_group_arns: m5demo-target-group.arn
+        load_balancers: m5demo-nlb.load_balancer_name
+#        target_group_arns: m5demo-target-group.arn
         min_size: 1
         max_size: 4
         desired_capacity: 1
