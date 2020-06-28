@@ -1,5 +1,6 @@
 ---
 - import_playbook: create_vpc.yaml
+- import_playbook: create_nacls.yaml
 - import_playbook: create_sgs.yaml
 - import_playbook: create_tg.yaml
 - import_playbook: create_iam_role.yaml
