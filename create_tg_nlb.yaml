@@ -8,6 +8,8 @@
     - name: Create target group
       elb_target_group:
         name: m5demo-target-group
+        stickiness_enabled: no
+        stickiness_type: source_ip
         target_type: instance
         protocol: TCP
         port: 80
@@ -29,5 +31,7 @@
             Port: 443
             DefaultActions:
               - Type: forward 
-                TargetGroupName: m5demo-target-group 
+                TargetGroupName: m5demo-target-group
+            Certificates:
+              - CertificateArn: arn:aws:acm:us-west-1:719573831279:certificate/9ae8db90-f6be-48cd-a599-8c2dfb1833e4
         state: present 
