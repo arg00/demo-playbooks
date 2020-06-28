@@ -9,18 +9,7 @@
       iam_role:
         name: m5server-role
         assume_role_policy_document: "{{ lookup('file','assume_role_policy.json') }}"
+        managed_policy:
+          - arn:aws:iam::719573831279:policy/image_gallery_s3_policy
+          -  arn:aws:iam::719573831279:policy/image_gallery_secrets_policy
         description: M5 server accesses s3 and secrets
-    - name: Create s3 policy 
-      iam_policy:
-        iam_type: role
-        iam_name: m5server-role
-        policy_name: m5s3policy
-        state: present
-        policy_document: "{{ lookup('file','m5s3policy.json') }}"
-    - name: Create s3 policy 
-      iam_policy:
-        iam_type: role
-        iam_name: m5server-role
-        policy_name: m5s3policy
-        state: present
-        policy_document: "{{ lookup('file','m5s3policy.json') }}"
