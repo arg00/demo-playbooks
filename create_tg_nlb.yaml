@@ -48,4 +48,18 @@
                 TargetGroupName: m5demo-target-group
             Certificates:
               - CertificateArn: arn:aws:acm:us-west-1:719573831279:certificate/9ae8db90-f6be-48cd-a599-8c2dfb1833e4
-        state: present 
+        state: present
+    - name: # Update route 53 entry w new nlb az eips replicated
+      route53:
+        zone: ariana-g.com
+        record: 
+          - ariana-g.com
+		    www.ariana-g.com
+        type: A
+        ttl: 7200
+        value:
+          - "{{ eip1.public_ip }}"
+          - "{{ eip2.public_ip }}"
+        wait: yes
+        state: present
+        
