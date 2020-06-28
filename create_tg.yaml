@@ -15,4 +15,5 @@
         port: 80
         vpc_id: "{{ vpc_demo.vpc.id }}"
         state: present
+      register: m5tg
   

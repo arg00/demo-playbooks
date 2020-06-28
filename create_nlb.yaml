@@ -55,13 +55,11 @@
           - 52.9.246.95
         wait: yes
         state: present
-    - name: debug nlb
-      debug: var=m5demo-nlb
     - name: create asg
       ec2_asg:
         name: m5-asg
-        load_balancers: m5demo-nlb
-#        target_group_arns: m5demo-target-group.arn
+#        load_balancers: m5demo-nlb
+        target_group_arns: '{{ m5tg.target_group_arn }}' 
         min_size: 1
         max_size: 4
         desired_capacity: 1
