@@ -15,12 +15,16 @@
         state: present
     - name: Allocate a new elastic IP without associating it to anything
       ec2_eip:
+        reuse_existing_ip_allowed: yes
+        tag_name: NLB 
         state: present
       register: eip1
     - name: Allocate a new elastic IP without associating it to anything 2
       ec2_eip:
+        reuse_existing_ip_allowed: yes
+        tag_name: NLB
         state: present
-      register: eip2 
+      register: eip2
     - name: Create network load balancer
       elb_network_lb:
         name: m5demo-nlb
