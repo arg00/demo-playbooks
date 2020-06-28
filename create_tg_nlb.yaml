@@ -54,7 +54,7 @@
         zone: ariana-g.com
         record: 
           - ariana-g.com
-		    www.ariana-g.com
+            www.ariana-g.com
         type: A
         ttl: 7200
         value:
